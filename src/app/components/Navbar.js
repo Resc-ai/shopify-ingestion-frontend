@@ -42,7 +42,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-8 py-4">
         {/* Brand */}
         <Link href="/" className="text-2xl font-bold text-[#0052FF] hover:text-blue-600 transition">
-          Shopify Dashboard
+          SHIPIT
         </Link>
 
         {/* Navigation */}

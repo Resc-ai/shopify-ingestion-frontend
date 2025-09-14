@@ -18,7 +18,7 @@ export default function LoginPage() {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 mb-16">
       <div className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md">
         {/* Logo / Title */}
         <h1 className="text-3xl font-extrabold text-gray-900 mb-2">

@@ -7,9 +7,6 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   BarChart, Bar, ResponsiveContainer
 } from "recharts";
-import Chart from "react-apexcharts";
-
-
 export default function ReportsPage() {
   const [summary, setSummary] = useState({});
   const [ordersOverTime, setOrdersOverTime] = useState([]);
@@ -19,6 +16,16 @@ export default function ReportsPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [hasApplied, setHasApplied] = useState(false);
+  const [forecastData, setForecastData] = useState([]);
+
+async function fetchForecast() {
+  try {
+    const res = await api.get("/shopify/reports/revenue-forecast");
+    setForecastData(res.data.forecast);
+  } catch (err) {
+    console.error("❌ Error fetching forecast:", err);
+  }
+}
 
   async function fetchData() {
     try {
@@ -51,6 +58,7 @@ export default function ReportsPage() {
       setTopProducts(topProdRes.data);
 
       setHasApplied(true);
+      fetchForecast();
     } catch (err) {
       console.error("❌ Error fetching reports:", err);
     }
@@ -58,7 +66,7 @@ export default function ReportsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="pt-24 max-w-7xl mx-auto px-6 md:px-8 space-y-6">
+      <div className="pt-24 max-w-7xl mx-auto px-6 md:px-8 space-y-6 mb-16">
         {/* Header */}
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-[#1A1A1A]">Reports Dashboard</h1>
@@ -190,7 +198,7 @@ export default function ReportsPage() {
               <div className="bg-white shadow-md rounded-xl p-6 text-center">
                 <p className="text-gray-500">Total Revenue</p>
                 <p className="text-2xl font-bold text-[#0052FF]">
-                  ${summary.totalRevenue?.toFixed(2)}
+                  Rs.{summary.totalRevenue?.toFixed(2)}
                 </p>
               </div>
             </div>
@@ -198,7 +206,7 @@ export default function ReportsPage() {
             {/* Orders & Revenue Charts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white shadow-md rounded-xl p-4">
-                <h2 className="text-xl font-semibold mb-2">Orders Over Time</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black">Orders Over Time</h2>
                 <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={ordersOverTime}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -212,13 +220,13 @@ export default function ReportsPage() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl p-4">
-                <h2 className="text-xl font-semibold mb-2">Revenue Over Time</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black">Revenue Over Time</h2>
                 <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={ordersOverTime}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis />
-                    <Tooltip formatter={(v) => `$${v.toFixed(2)}`} />
+                    <Tooltip formatter={(v) => `Rs.${v.toFixed(2)}`} />
                     <Legend />
                     <Line type="monotone" dataKey="total_revenue" stroke="#00C49F" strokeWidth={2}/>
                   </LineChart>
@@ -229,11 +237,17 @@ export default function ReportsPage() {
             {/* Top Customers & Products */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white shadow-md rounded-xl p-4">
-                <h2 className="text-xl font-semibold mb-2">Top 5 Customers by Spend</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black">Top 5 Customers by Spend</h2>
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={topCustomers}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis 
+                      dataKey="name" 
+                      interval={0}          // show all labels
+                      tick={{ fontSize: 12 }} // shrink font a bit
+                      angle={0}           // tilt labels to prevent overlap
+                      textAnchor="end" 
+                    />
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="total_spent" fill="#0052FF" />
@@ -242,11 +256,17 @@ export default function ReportsPage() {
               </div>
 
               <div className="bg-white shadow-md rounded-xl p-4">
-                <h2 className="text-xl font-semibold mb-2">Top 5 Products by Sales</h2>
+                <h2 className="text-xl font-semibold mb-2 text-black">Top 5 Products by Sales</h2>
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={topProducts}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="title" />
+                    <XAxis 
+                      dataKey="title" 
+                      interval={0}          // show all labels
+                      tick={{ fontSize: 10 }} // shrink font a bit
+                      angle={-10}           // tilt labels to prevent overlap
+                      textAnchor="end" 
+                    />
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="qty" fill="#FFC658" />
@@ -256,6 +276,72 @@ export default function ReportsPage() {
             </div>
           </>
         )}
+        {/* Revenue Forecast */}
+<div className="bg-white shadow-md rounded-xl p-6">
+  <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">
+    Revenue Forecast <span className="text-sm text-gray-500">(Next 7 Days)</span>
+  </h2>
+  <ResponsiveContainer width="100%" height={280}>
+    <LineChart data={forecastData}>
+      <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+      <XAxis dataKey="date" stroke="#6B7280" />
+      <YAxis stroke="#6B7280" />
+      <Tooltip formatter={(v) => `Rs.${v.toFixed(2)}`} />
+      <Legend />
+      <Line
+        type="monotone"
+        dataKey="revenue"
+        stroke="#0052FF"
+        strokeWidth={2.5}
+        dot={{ r: 3 }}
+        name="Actual"
+        data={forecastData.slice(0, -7)}
+      />
+      <Line
+        type="monotone"
+        dataKey="revenue"
+        stroke="#FF5733"
+        strokeDasharray="6 4"
+        strokeWidth={2.5}
+        dot={false}
+        name="Forecast"
+        data={forecastData.slice(-7)}
+      />
+    </LineChart>
+  </ResponsiveContainer>
+</div>
+
+{/* Insights Row */}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+  <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+    <p className="text-gray-500 text-sm">Returning vs New</p>
+    <p className="text-2xl font-bold text-[#0052FF] mt-2">
+      {summary.returningRate}% <span className="text-gray-600 text-base">Returning</span>
+    </p>
+  </div>
+
+  <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+    <p className="text-gray-500 text-sm">High-Value Customers</p>
+    <p className="text-2xl font-bold text-[#0052FF] mt-2">
+      {summary.highValueCount}
+    </p>
+  </div>
+
+  <div className="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+    <p className="text-gray-500 text-sm">At Risk of Churn</p>
+    <p className="text-2xl font-bold text-red-500 mt-2">{summary.churnRisk}</p>
+  </div>
+
+  <div className="bg-gradient-to-r from-[#0052FF] to-[#00C49F] p-6 rounded-xl text-white shadow-lg flex flex-col items-center relative overflow-hidden">
+    <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+    <p className="text-sm opacity-90">Projected ARR</p>
+    <p className="text-3xl font-bold mt-2">
+      Rs.{summary.projectedARR?.toLocaleString()}
+    </p>
+    <p className="text-xs mt-1 opacity-80">Based on current trends</p>
+  </div>
+</div>
+
       </div>
     </ProtectedRoute>
   );

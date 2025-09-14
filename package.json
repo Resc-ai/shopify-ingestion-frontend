@@ -9,12 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.2",
+    "@mui/x-data-grid": "^8.11.2",
+    "@tanstack/react-table": "^8.21.3",
     "apexcharts": "^5.3.5",
     "axios": "^1.11.0",
+    "framer-motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-apexcharts": "^1.7.0",
+    "react-countup": "^6.5.3",
+    "react-csv": "^2.2.2",
     "react-dom": "19.1.0",
+    "react-fast-marquee": "^1.6.5",
     "recharts": "^3.2.0"
   },
   "devDependencies": {

@@ -28,7 +28,7 @@ export default function ProfilePage() {
 
 
   return (
-    <div className="pt-24 p-6 max-w-3xl mx-auto">
+    <div className="pt-24 p-6 max-w-3xl mx-auto  mb-16">
       <h1 className="text-3xl font-bold mb-6 text-[#0052FF]">Tenant Profile</h1>
 
       <div className="bg-white shadow-md rounded-xl p-6 space-y-4">

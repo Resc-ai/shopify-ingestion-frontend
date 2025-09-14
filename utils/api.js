@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "https://shopify-ingestion-backend.onrender.com",
 });
 
 // Attach API key from localStorage for tenant auth
