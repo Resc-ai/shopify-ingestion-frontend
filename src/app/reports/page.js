@@ -291,15 +291,6 @@ async function fetchForecast() {
       <Line
         type="monotone"
         dataKey="revenue"
-        stroke="#0052FF"
-        strokeWidth={2.5}
-        dot={{ r: 3 }}
-        name="Actual"
-        data={forecastData.slice(0, -7)}
-      />
-      <Line
-        type="monotone"
-        dataKey="revenue"
         stroke="#FF5733"
         strokeDasharray="6 4"
         strokeWidth={2.5}
