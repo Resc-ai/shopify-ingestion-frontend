@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import api from "../../../utils/api";
+import Link from "next/link";
 import ProtectedRoute from "../components/ProtectedRoute";
 
 export default function OrdersPage() {
@@ -123,7 +124,15 @@ export default function OrdersPage() {
             <p className="text-gray-500">No products sold yet.</p>
           )}
         </div>
-
+        {/* Checkout Link Section */}
+        <div className="flex justify-end mb-8">
+          <Link
+            href="/checkouts"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-blue-600 hover:to-indigo-700 transition"
+          >
+            <span>🛒 View Checkouts</span>
+          </Link>
+        </div>
         {/* Orders List */}
         <div className="space-y-4">
           {filteredOrders.map(order => (

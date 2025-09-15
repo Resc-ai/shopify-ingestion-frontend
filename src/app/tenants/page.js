@@ -5,6 +5,7 @@ import api from "../../../utils/api";
 export default function TenantOnboard() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [shopUrl, setShopUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [message, setMessage] = useState("");
@@ -15,13 +16,14 @@ export default function TenantOnboard() {
       const res = await api.post("/tenants/onboard", { 
         name, 
         email,
+        password,
         shopUrl,
         accessToken 
       });
       setMessage(`✅ Tenant onboarded. API Key: ${res.data.api_key}`);
       localStorage.setItem("apiKey", res.data.api_key);
     } catch (err) {
-      setMessage("❌ Error onboarding tenant");
+      setMessage("❌ Error onboarding tenant: " + (err.response?.data?.error || err.message));
     }
   }
 
@@ -37,28 +39,35 @@ export default function TenantOnboard() {
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <input
             type="email"
             placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <input
             type="text"
             placeholder="Shopify Store URL (e.g. mystore.myshopify.com)"
             value={shopUrl}
             onChange={(e) => setShopUrl(e.target.value)}
-            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <input
             type="text"
             placeholder="Shopify Access Token"
             value={accessToken}
             onChange={(e) => setAccessToken(e.target.value)}
-            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            className="w-full p-3 border border-gray-400 text-gray-900 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <button
             type="submit"
@@ -69,9 +78,7 @@ export default function TenantOnboard() {
         </form>
         {message && (
           <p
-            className={`mt-5 text-center font-medium ${
-              message.startsWith("✅") ? "text-green-600" : "text-red-600"
-            }`}
+            className={`mt-5 text-center font-medium ${message.startsWith("✅") ? "text-green-600" : "text-red-600"}`}
           >
             {message}
           </p>
