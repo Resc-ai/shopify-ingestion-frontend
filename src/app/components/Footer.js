@@ -38,8 +38,8 @@ const Footer = () => {
 
           <h3 className="font-semibold mt-5 mb-3">Industries</h3>
           <ul className="space-y-1 text-sm">
-            <li><Link href="#">Fashion & Apparels</Link></li>
-            <li><Link href="#">Beauty & Cosmetics</Link></li>
+            <li><Link href="#">Fashion and Apparels</Link></li>
+            <li><Link href="#">Beauty and Cosmetics</Link></li>
             <li><Link href="#">Restaurants</Link></li>
           </ul>
         </div>
@@ -62,7 +62,7 @@ const Footer = () => {
           <ul className="space-y-1 text-sm">
             <li>
               <Link href="#">
-                Careers <span className="bg-blue-600 text-white text-xs px-1 rounded ml-1">We're Hiring</span>
+                Careers <span className="bg-blue-600 text-white text-xs px-1 rounded ml-1">We are Hiring</span>
               </Link>
             </li>
             <li><Link href="#">Contact Us</Link></li>

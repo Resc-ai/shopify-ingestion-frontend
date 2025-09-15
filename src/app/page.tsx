@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function DashboardPage() {
   const [demoEmail, setDemoEmail] = useState("");
@@ -63,11 +64,13 @@ export default function DashboardPage() {
   className="flex-1"
 >
   <div className="w-full h-72 md:h-96 bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 rounded-2xl flex items-center justify-center shadow-2xl border border-gray-200">
-    <img
-      src="./ChatGPT Image Sep 12, 2025, 06_29_03 PM.png"   // Replace with your image URL or import
-      alt="Hero Mockup"
-      className="w-full h-full object-cover rounded-2xl"
-    />
+    <Image
+  src="/ChatGPT Image Sep 12, 2025, 06_29_03 PM.png" // Place your image in the public/ folder
+  alt="Hero Mockup"
+  width={800} // Adjust width as needed
+  height={600} // Adjust height as needed
+  className="w-full h-full object-cover rounded-2xl"
+/>
   </div>
 </motion.div>
 
