@@ -42,7 +42,7 @@ A Next.js dashboard for managing Shopify tenant data, including customers, order
 
 ## System Architecture
 
-![Architecture Diagram](./docs/architecture.png)
+![Architecture Diagram](./docs/architecture.jpeg)
 
 ---
 
